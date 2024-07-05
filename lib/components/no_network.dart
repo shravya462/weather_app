@@ -10,8 +10,8 @@ class NoNetwork extends StatelessWidget {
     return Center(
         child: TextWidget(
       txtTitle: "No Network",
-      txtFontStyle: FontWeight.w400,
-      txtFontSize: 14,
+      txtFontStyle: FontWeight.bold,
+      txtFontSize: 28,
       txtColor: AppColors.black,
     ));
   }

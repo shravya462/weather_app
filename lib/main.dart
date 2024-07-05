@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/provider/weather_detail_provider.dart';
 import 'package:weather_app/splash_screen.dart';
 import 'package:weather_app/utils/network_util.dart';
 
@@ -9,6 +10,9 @@ void main() {
       create: (ctx) => NetworkUtil().connectionStatusController.stream,
       initialData: ConnectivityStatus.WiFi,
     ),
+    ChangeNotifierProvider(
+      create: (context) => WeatherDetailProvider(),
+    )
   ], child: const MyApp()));
 }
 
