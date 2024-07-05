@@ -10,7 +10,7 @@ class TextWidget extends StatelessWidget {
   final bool wrapValue;
   final TextOverflow? overflow;
 
-  TextWidget({
+  const TextWidget({
     required this.txtTitle,
     required this.txtColor,
     required this.txtFontStyle,
@@ -26,7 +26,7 @@ class TextWidget extends StatelessWidget {
       txtTitle,
       softWrap: wrapValue,
       overflow: overflow,
-      style: GoogleFonts.montserrat(
+      style: GoogleFonts.ebGaramond(
         fontSize: txtFontSize,
         fontWeight: txtFontStyle,
         color: txtColor, // White text color

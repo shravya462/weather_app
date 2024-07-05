@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/components/no_network.dart';
 import 'package:weather_app/home_screen.dart';
+import 'package:weather_app/res/appcolors.dart';
 import 'package:weather_app/res/images.dart';
 import 'package:weather_app/utils/network_util.dart';
 
@@ -37,6 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return connectionStatus == ConnectivityStatus.Offline
         ? const Scaffold(body: NoNetwork())
         : Scaffold(
+            backgroundColor: AppColors.primaryColor,
             body: Center(
               child: Image.asset(
                 Images.splash,
