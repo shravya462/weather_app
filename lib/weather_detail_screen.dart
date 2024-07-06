@@ -34,160 +34,166 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<WeatherDetailProvider>(context);
     var connectionStatus = Provider.of<ConnectivityStatus>(context);
-    List<WeatherInfo> weatherList = [
-      WeatherInfo(
-          title: 'Current Temp',
-          data: '${provider.weatherData.current?.tempC}°C'),
-      WeatherInfo(
-          title: 'Min Temp',
-          data:
-              '${provider.weatherData.forecast?.forecastday?[0].day?.mintempC}°C'),
-      WeatherInfo(
-          title: 'Max Temp',
-          data:
-              '${provider.weatherData.forecast?.forecastday?[0].day?.maxtempC}°C'),
-      WeatherInfo(
-          title: 'Humidity',
-          data: '${provider.weatherData.current?.humidity}%'),
-      WeatherInfo(
-          title: 'Wind', data: '${provider.weatherData.current?.windKph} kph'),
-    ];
+
     return connectionStatus == ConnectivityStatus.Offline
         ? const Scaffold(body: NoNetwork())
-        : Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: AppColors.primaryColor,
-              leading: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_outlined,
-                  color: AppColors.primaryColor2,
+        : Consumer<WeatherDetailProvider>(builder: (context, provider, child) {
+            List<WeatherInfo> weatherList = [
+              WeatherInfo(
+                  title: 'Current Temp',
+                  data: '${provider.weatherData.current?.tempC}°C'),
+              WeatherInfo(
+                  title: 'Min Temp',
+                  data:
+                      '${provider.weatherData.forecast?.forecastday?[0].day?.mintempC}°C'),
+              WeatherInfo(
+                  title: 'Max Temp',
+                  data:
+                      '${provider.weatherData.forecast?.forecastday?[0].day?.maxtempC}°C'),
+              WeatherInfo(
+                  title: 'Humidity',
+                  data: '${provider.weatherData.current?.humidity}%'),
+              WeatherInfo(
+                  title: 'Wind',
+                  data: '${provider.weatherData.current?.windKph} kph'),
+            ];
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: AppColors.primaryColor,
+                leading: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: AppColors.primaryColor2,
+                  ),
                 ),
               ),
-            ),
-            body: provider.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : provider.errorMessage != null
-                    ? Center(
-                        child: TextWidget(
-                          txtTitle: provider.errorMessage ?? "",
-                          txtColor: AppColors.white,
-                          txtFontStyle: FontWeight.bold,
-                          txtFontSize: 28,
-                        ),
-                      )
-                    : provider.weatherData == null
-                        ? const Center(
-                            child: TextWidget(
-                              txtTitle: 'No data available',
-                              txtColor: AppColors.white,
-                              txtFontStyle: FontWeight.bold,
-                              txtFontSize: 28,
-                            ),
-                          )
-                        : OrientationBuilder(
-                            builder: (context, orientation) {
-                              return SingleChildScrollView(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 55, 16, 25),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Center(
-                                        child: Column(
-                                          children: [
-                                            TextWidget(
-                                              txtTitle: capitalizeFirstLetter(
-                                                  widget.city),
-                                              txtColor: AppColors.white,
-                                              txtFontStyle: FontWeight.bold,
-                                              txtFontSize: 32,
-                                            ),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            Image.network(
-                                              'https:${provider.weatherData.current?.condition?.icon}',
-                                              scale: 0.8,
-                                            ),
-                                            TextWidget(
-                                              txtTitle: provider
-                                                      .weatherData
-                                                      .current
-                                                      ?.condition
-                                                      ?.text ??
-                                                  "",
-                                              txtColor: AppColors.primaryColor2,
-                                              txtFontStyle: FontWeight.bold,
-                                              txtFontSize: 20,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.all(10),
-                                        margin: const EdgeInsets.only(top: 30),
-                                        height:
-                                            orientation == Orientation.portrait
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.4
-                                                : MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.7,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryColor1,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.3),
-                                              spreadRadius: 2,
-                                              blurRadius: 3,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        child: GridView.count(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          crossAxisCount: orientation ==
-                                                  Orientation.portrait
-                                              ? 2
-                                              : 4,
-                                          crossAxisSpacing: 10,
-                                          mainAxisSpacing: 10,
-                                          childAspectRatio: orientation ==
-                                                  Orientation.portrait
-                                              ? 1.7
-                                              : 1.5,
-                                          children: List.generate(
-                                            weatherList.length,
-                                            (index) {
-                                              return WeatherDataComp(
-                                                title: weatherList[index].title,
-                                                data: weatherList[index].data,
-                                              );
-                                            },
+              body: provider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : provider.errorMessage != ""
+                      ? Center(
+                          child: TextWidget(
+                            txtTitle: provider.errorMessage ?? "",
+                            txtColor: AppColors.white,
+                            txtFontStyle: FontWeight.bold,
+                            txtFontSize: 28,
+                          ),
+                        )
+                      : provider.weatherData == null
+                          ? const Center(
+                              child: TextWidget(
+                                txtTitle: 'No data available',
+                                txtColor: AppColors.white,
+                                txtFontStyle: FontWeight.bold,
+                                txtFontSize: 28,
+                              ),
+                            )
+                          : OrientationBuilder(
+                              builder: (context, orientation) {
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 55, 16, 25),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                          child: Column(
+                                            children: [
+                                              TextWidget(
+                                                txtTitle: capitalizeFirstLetter(
+                                                    widget.city),
+                                                txtColor: AppColors.white,
+                                                txtFontStyle: FontWeight.bold,
+                                                txtFontSize: 32,
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              Image.network(
+                                                'https:${provider.weatherData.current?.condition?.icon}',
+                                                scale: 0.8,
+                                              ),
+                                              TextWidget(
+                                                txtTitle: provider
+                                                        .weatherData
+                                                        .current
+                                                        ?.condition
+                                                        ?.text ??
+                                                    "",
+                                                txtColor:
+                                                    AppColors.primaryColor2,
+                                                txtFontStyle: FontWeight.bold,
+                                                txtFontSize: 20,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Container(
+                                          padding: const EdgeInsets.all(10),
+                                          margin:
+                                              const EdgeInsets.only(top: 30),
+                                          height: orientation ==
+                                                  Orientation.portrait
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.4
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.7,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primaryColor1,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppColors.black
+                                                    .withOpacity(0.3),
+                                                spreadRadius: 2,
+                                                blurRadius: 3,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: GridView.count(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            crossAxisCount: orientation ==
+                                                    Orientation.portrait
+                                                ? 2
+                                                : 4,
+                                            crossAxisSpacing: 10,
+                                            mainAxisSpacing: 10,
+                                            childAspectRatio: orientation ==
+                                                    Orientation.portrait
+                                                ? 1.7
+                                                : 1.5,
+                                            children: List.generate(
+                                              weatherList.length,
+                                              (index) {
+                                                return WeatherDataComp(
+                                                  title:
+                                                      weatherList[index].title,
+                                                  data: weatherList[index].data,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-          );
+                                );
+                              },
+                            ),
+            );
+          });
   }
 }

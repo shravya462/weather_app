@@ -14,11 +14,11 @@ class ApiService {
         // Parse the response body and return a WeatherDetailDataResponse object.
         return weatherDetailData(response.body.toString());
       } else {
-        throw Exception('Failed to load news articles');
+        throw Exception('Failed to load weather data');
       }
     } catch (e) {
       // Catch any errors that occur during the request and throw an exception .
-      throw Exception('Failed to load news articles: $e');
+      throw Exception('Failed to load weather data: $e');
     }
   }
 }
