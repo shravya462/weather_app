@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return connectionStatus == ConnectivityStatus.Offline
         ? const Scaffold(body: NoNetwork())
         : Scaffold(
-            backgroundColor: const Color.fromRGBO(11, 18, 30, 1),
             body: SafeArea(
               child: LayoutBuilder(
                 // Build the UI inside LayoutBuilder to dynamically adjust  across various device sizes
@@ -53,12 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: AppColors.white,
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.search, color: Colors.grey),
+                                  const Icon(Icons.search,
+                                      color: AppColors.secondaryColor),
                                   const SizedBox(width: 10.0),
                                   Expanded(
                                     child: TextField(
