@@ -57,7 +57,6 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
     return connectionStatus == ConnectivityStatus.Offline
         ? const Scaffold(body: NoNetwork())
         : Scaffold(
-            backgroundColor: AppColors.primaryColor,
             appBar: AppBar(
               automaticallyImplyLeading: false,
               backgroundColor: AppColors.primaryColor,
@@ -74,14 +73,21 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
             body: provider.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : provider.errorMessage != null
-                    ? Center(child: Text(provider.errorMessage!))
+                    ? Center(
+                        child: TextWidget(
+                          txtTitle: provider.errorMessage ?? "",
+                          txtColor: AppColors.white,
+                          txtFontStyle: FontWeight.bold,
+                          txtFontSize: 28,
+                        ),
+                      )
                     : provider.weatherData == null
-                        ? Center(
+                        ? const Center(
                             child: TextWidget(
                               txtTitle: 'No data available',
-                              txtColor: AppColors.primaryColor2,
+                              txtColor: AppColors.white,
                               txtFontStyle: FontWeight.bold,
-                              txtFontSize: 20,
+                              txtFontSize: 28,
                             ),
                           )
                         : OrientationBuilder(
@@ -104,7 +110,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
                                               txtFontStyle: FontWeight.bold,
                                               txtFontSize: 32,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 20,
                                             ),
                                             Image.network(

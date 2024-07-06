@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/provider/weather_detail_provider.dart';
+import 'package:weather_app/res/appcolors.dart';
 import 'package:weather_app/splash_screen.dart';
 import 'package:weather_app/utils/network_util.dart';
 
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       title: 'Weather Now',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        scaffoldBackgroundColor: AppColors.primaryColor,
         useMaterial3: true,
       ),
       home: const SplashScreen(),

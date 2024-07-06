@@ -7,12 +7,12 @@ class NoNetwork extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
         child: TextWidget(
       txtTitle: "No Network",
       txtFontStyle: FontWeight.bold,
       txtFontSize: 28,
-      txtColor: AppColors.black,
+      txtColor: AppColors.white,
     ));
   }
 }
